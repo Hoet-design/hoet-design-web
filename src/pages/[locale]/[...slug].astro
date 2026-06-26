@@ -8,6 +8,7 @@ export async function getStaticPaths() {
   const paths: any[] = []
   for (const locale of LOCALES) {
     for (const page of pages) {
+      if (page.internalName === 'Contact') continue // handled by the dedicated contact route
       const s = slugOf(page, locale)
       if (!s) continue
       paths.push({ params: { locale, slug: s }, props: { page } })

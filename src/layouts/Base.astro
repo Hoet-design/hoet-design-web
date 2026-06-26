@@ -8,8 +8,9 @@ interface Props {
   title?: string
   description?: string
   langUrls?: Partial<Record<Locale, string>> // per-locale URL of the current page
+  isHome?: boolean // home hero sits under the fixed nav (no top offset)
 }
-const { locale, title, description, langUrls } = Astro.props
+const { locale, title, description, langUrls, isHome } = Astro.props
 
 const pages = await getPages()
 const settings = await getSettings()
@@ -75,7 +76,7 @@ const metaTitle = title ? `${title} — Hoet Design` : 'Hoet Design'
     </nav>
   </header>
 
-  <div class="main-content-wrap"><div class="main-wrap"><div id="mainContentWrap">
+  <div class={`main-content-wrap ${isHome ? 'is-home' : ''}`}><div class="main-wrap"><div id="mainContentWrap">
     <slot />
   </div></div></div>
 

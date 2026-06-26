@@ -1,7 +1,7 @@
 ---
 import Base from '../../../layouts/Base.astro'
+import ReferenceList from '../../../components/ReferenceList.astro'
 import { LOCALES, getReferences, type Locale } from '../../../lib/sanity'
-import { t, pt, imgUrl, slugOf, imgAlt } from '../../../lib/content'
 import { ui } from '../../../lib/ui'
 export function getStaticPaths() {
   return LOCALES.map((locale) => ({ params: { locale } }))
@@ -15,35 +15,7 @@ const langUrls = Object.fromEntries(LOCALES.map((l) => [l, `/${l}/referenties`])
     <div class="row"><div class="columns">
       <h1 class="main__title">{ui('referenties', locale)}</h1>
       <div class="section">
-        <div class="ref-wrap">
-          {refs.map((r: any) => {
-            const url = `/${locale}/referenties/${slugOf(r, locale)}`
-            const title = t(r.title, locale)
-            const logo = imgUrl(r.logo, 600)
-            return (
-              <div class="ref__block">
-                <div class="ref__block__logo">
-                  <a class="overlay-link" href={url} title={title}></a>
-                  {logo && <div class="ref-logo"><img src={logo} alt={imgAlt(r.logo, locale, title)} /></div>}
-                </div>
-                <div class="ref__block__slider">
-                  <a class="overlay-link" href={url} title={title}></a>
-                  <div class="ref-slider" data-slider>
-                    {(r.photos ?? []).map((p: any) => {
-                      const src = imgUrl(p, 800)
-                      return src ? <div class="ref-slider__item"><img src={src} alt="" /></div> : null
-                    })}
-                  </div>
-                </div>
-                <div class="ref__block__info">
-                  <a href={url} title={title}><h3>{title}</h3></a>
-                  <div class="page-content" set:html={pt(r.description, locale)} />
-                  <a href={url} title={title} class="more"><i class="fa fa-angle-double-right"></i> {ui('leesMeer', locale)}</a>
-                </div>
-              </div>
-            )
-          })}
-        </div>
+        <ReferenceList refs={refs} locale={locale} />
       </div>
     </div></div>
   </section>

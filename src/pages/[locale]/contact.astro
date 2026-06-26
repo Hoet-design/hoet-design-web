@@ -1,0 +1,65 @@
+---
+import Base from '../../layouts/Base.astro'
+import { LOCALES, type Locale } from '../../lib/sanity'
+import { ui } from '../../lib/ui'
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({ params: { locale } }))
+}
+const locale = Astro.params.locale as Locale
+const langUrls = Object.fromEntries(LOCALES.map((l) => [l, `/${l}/contact`]))
+const mapsQ = encodeURIComponent('Klaverstraat 71, 8000 Brugge, België')
+---
+<Base locale={locale} title={ui('contactTitle', locale)} langUrls={langUrls}>
+  <section class="content-section content-section--white">
+    <div class="row"><div class="columns">
+      <div class="main__title">{ui('contactTitle', locale)}</div>
+      <div class="section no-bottom"><div class="row">
+
+        <div class="columns small-12 medium-6">
+          <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="form contact">
+            <input type="hidden" name="form-name" value="contact" />
+            <p class="hidden" hidden><label>Don’t fill this out: <input name="bot-field" /></label></p>
+            <div class="field_row container"><input type="text" name="name" placeholder={ui('fName', locale)} required /></div>
+            <div class="field_row container"><input type="email" name="email" placeholder={ui('fEmail', locale)} required /></div>
+            <div class="field_row container"><input type="text" name="telefoon" placeholder={ui('fPhone', locale)} /></div>
+            <div class="field_row container"><textarea name="bericht" placeholder={ui('fMessage', locale)} rows="5"></textarea></div>
+            <label class="contact-gdpr"><input type="checkbox" name="privacy" required /> <span>{ui('fGdpr', locale)}</span></label>
+            <div class="text-right"><button type="submit" class="btn btn--full">{ui('fSubmit', locale)}</button></div>
+          </form>
+        </div>
+
+        <div class="columns small-12 medium-6">
+          <div class="section page-content">
+            <p>{ui('contactIntro', locale)}</p>
+            <p>
+              <strong>Hoet Eyewear Design</strong><br />
+              Klaverstraat 71<br />
+              BE-8000 Brugge — België<br />
+              T <a href="tel:+3250334302">+32 (0)50 33 43 02</a><br />
+              <a href="mailto:info@hoet.be">info@hoet.be</a>
+            </p>
+          </div>
+        </div>
+
+      </div></div>
+    </div></div>
+  </section>
+
+  <section class="content-section content-section--white" style="padding-top:0;">
+    <div class="row"><div class="columns">
+      <iframe class="contact-map" title="Hoet Design — Klaverstraat 71, Brugge" loading="lazy"
+        src={`https://www.google.com/maps?q=${mapsQ}&output=embed`}></iframe>
+    </div></div>
+  </section>
+
+  <section class="content-section content-section--black contact-cta">
+    <div class="row"><div class="columns" style="text-align:center;">
+      <h2 class="main__title hero">{ui('contactTitle', locale)}</h2>
+      <p class="contact-cta__line">
+        <a href="tel:+3250334302"><i class="fa fa-phone"></i> +32 (0)50 33 43 02</a>
+        <span class="contact-cta__sep">·</span>
+        <a href="mailto:info@hoet.be"><i class="fa fa-envelope"></i> info@hoet.be</a>
+      </p>
+    </div></div>
+  </section>
+</Base>

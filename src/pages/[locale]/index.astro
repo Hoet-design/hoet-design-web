@@ -1,17 +1,50 @@
 ---
 import Base from '../../layouts/Base.astro'
-import Blocks from '../../components/Blocks.astro'
-import { LOCALES, getPage, type Locale } from '../../lib/sanity'
+import ReferenceList from '../../components/ReferenceList.astro'
+import { LOCALES, getPage, getReferences, type Locale } from '../../lib/sanity'
 import { t } from '../../lib/content'
+import { ui } from '../../lib/ui'
+import { HOME_INTRO } from '../../lib/home'
 export function getStaticPaths() {
   return LOCALES.map((locale) => ({ params: { locale } }))
 }
 const locale = Astro.params.locale as Locale
 const page = await getPage('Home')
+const refs = await getReferences()
 const title = t(page?.seo?.metaTitle, locale) || t(page?.title, locale)
 const description = t(page?.seo?.metaDescription, locale)
 const langUrls = Object.fromEntries(LOCALES.map((l) => [l, `/${l}`]))
+const intro = HOME_INTRO[locale]
+const br = (s: string) => s.split('\n').join('<br>')
 ---
-<Base locale={locale} title={title} description={description} langUrls={langUrls}>
-  <Blocks blocks={page?.blocks ?? []} locale={locale} />
+<Base locale={locale} title={title} description={description} langUrls={langUrls} isHome>
+  {/* Video hero (under the fixed nav) */}
+  <section class="hd-home-hero">
+    <video id="mainVideo" autoplay loop muted playsinline poster="/media/home-hero-poster.png">
+      <source src="/media/home-hero.mp4" type="video/mp4" />
+    </video>
+  </section>
+
+  {/* Intro (centred), ported from the live home */}
+  <section id="homeContent" class="content-section content-section--white">
+    <div class="row"><div class="columns">
+      <h1 class="main__title hero" set:html={br(intro.title)} />
+      <div class="page-content intro-home">
+        <div style="text-align:center;" set:html={br(intro.para1)} />
+        <p>&nbsp;</p>
+        {intro.h2 && <h2 style="text-align:center;" set:html={br(intro.h2)} />}
+        <div style="text-align:center;" set:html={br(intro.para2)} />
+      </div>
+    </div></div>
+  </section>
+
+  {/* References (same blocks as /referenties) */}
+  <section class="content-section content-section--white">
+    <div class="row"><div class="columns">
+      <h1 class="main__title">{ui('referenties', locale)}</h1>
+      <div class="section">
+        <ReferenceList refs={refs} locale={locale} />
+      </div>
+    </div></div>
+  </section>
 </Base>
