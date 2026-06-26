@@ -1,0 +1,24 @@
+---
+import { t, imgUrl, fileUrl } from '../../lib/content'
+import type { Locale } from '../../lib/sanity'
+const { block, locale } = Astro.props as { block: any; locale: Locale }
+const title = t(block.title, locale)
+const subtitle = t(block.subtitle, locale)
+const video = fileUrl(block.videoDesktop)
+const poster = imgUrl(block.posterDesktop, 1600)
+const image = imgUrl(block.image, 1600)
+const bg = image && !video ? `background-image:url('${image}')` : ''
+---
+<section class="content-section content-section--home-hero hd-hero" style={bg}>
+  {video && (
+    <video class="hd-hero__video" autoplay loop muted playsinline poster={poster ?? undefined}>
+      <source src={video} type="video/mp4" />
+    </video>
+  )}
+  {(title || subtitle) && (
+    <div class="hd-hero__overlay">
+      {title && <h1 class="main__title hero" set:html={title.replace(/\n/g, '<br>')} />}
+      {subtitle && <p class="hd-hero__sub">{subtitle}</p>}
+    </div>
+  )}
+</section>

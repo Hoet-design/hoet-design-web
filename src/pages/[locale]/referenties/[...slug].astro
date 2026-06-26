@@ -1,0 +1,76 @@
+---
+import Base from '../../../layouts/Base.astro'
+import Blocks from '../../../components/Blocks.astro'
+import { LOCALES, getReferences, type Locale } from '../../../lib/sanity'
+import { t, pt, imgUrl, slugOf, imgAlt } from '../../../lib/content'
+import { ui } from '../../../lib/ui'
+export async function getStaticPaths() {
+  const refs = await getReferences()
+  const paths: any[] = []
+  for (const locale of LOCALES) for (const r of refs) {
+    const s = slugOf(r, locale); if (!s) continue
+    paths.push({ params: { locale, slug: s }, props: { ref: r } })
+  }
+  return paths
+}
+const { ref } = Astro.props as { ref: any }
+const locale = Astro.params.locale as Locale
+const title = t(ref.title, locale)
+const description = t(ref.seo?.metaDescription, locale)
+const langUrls = Object.fromEntries(LOCALES.map((l) => [l, `/${l}/referenties/${slugOf(ref, l) || slugOf(ref, 'nl')}`]))
+
+const descHtml = pt(ref.description, locale)
+const blocks = ref.blocks ?? []
+const hasBlocks = blocks.length > 0
+// Fallback gallery (only when there are no structured blocks): photos become a slider beside the description.
+const photos = (ref.photos ?? []).map((p: any) => ({ url: imgUrl(p, 1400), alt: imgAlt(p, locale, title) })).filter((p: any) => p.url)
+const sidePhoto = descHtml ? photos[0] : null
+const sliderPhotos = descHtml ? photos.slice(1) : photos
+---
+<Base locale={locale} title={t(ref.seo?.metaTitle, locale) || title} description={description} langUrls={langUrls}>
+  <div class="detail-top">
+    <div class="row collapse"><div class="columns medium-12">
+      <a href={`/${locale}/referenties`} title={ui('terugOverzicht', locale)} class="back-link">
+        <i class="fa fa-angle-double-left"></i> {ui('terugOverzicht', locale)}
+      </a>
+    </div></div>
+  </div>
+
+  <div class="detail-pagina detail-pagina--dark">
+    <section class="content-section content-section--alternate">
+      <div class="row"><div class="columns">
+        <h1 class="main__title no-bottom">{title}</h1>
+        {!hasBlocks && (descHtml || sidePhoto) && (
+          <div class="container"><div class="row">
+            {descHtml && (
+              <div class="columns medium-6 portrait-6">
+                <div class="page-content detail-content limit-width" set:html={descHtml} />
+              </div>
+            )}
+            {sidePhoto && (
+              <div class="columns medium-6 portrait-6 mobileMarginTop2">
+                <div class="detail-pagina__pic"><img src={sidePhoto.url} alt={sidePhoto.alt} /></div>
+              </div>
+            )}
+          </div></div>
+        )}
+      </div></div>
+    </section>
+
+    {hasBlocks ? (
+      <Blocks blocks={blocks} locale={locale} />
+    ) : (
+      sliderPhotos.length > 0 && (
+        <section class="content-section content-section--alternate has-slider">
+          <div class="row"><div class="columns">
+            <div class="hd-slider" data-slider>
+              {sliderPhotos.map((p: any, i: number) => (
+                <div class={`hd-slide ${i === 0 ? 'is-active' : ''}`} style={`background-image:url('${p.url}')`} role="img" aria-label={p.alt} />
+              ))}
+            </div>
+          </div></div>
+        </section>
+      )
+    )}
+  </div>
+</Base>

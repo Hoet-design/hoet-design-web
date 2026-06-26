@@ -1,0 +1,11 @@
+---
+import { pt } from '../../lib/content'
+import type { Locale } from '../../lib/sanity'
+const { block, locale } = Astro.props as { block: any; locale: Locale }
+const html = pt(block.text, locale)
+---
+<section class="content-section content-section--white">
+  <div class="row"><div class="columns">
+    <div class="page-content" set:html={html} />
+  </div></div>
+</section>

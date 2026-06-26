@@ -1,0 +1,134 @@
+---
+import { getPages, getSettings, LOCALES, type Locale } from '../lib/sanity'
+import { t, slugOf, imgUrl, imgAlt } from '../lib/content'
+import { ui } from '../lib/ui'
+
+interface Props {
+  locale: Locale
+  title?: string
+  description?: string
+  langUrls?: Partial<Record<Locale, string>> // per-locale URL of the current page
+}
+const { locale, title, description, langUrls } = Astro.props
+
+const pages = await getPages()
+const settings = await getSettings()
+const byName = (n: string) => pages.find((p: any) => p.internalName === n)
+
+const home = byName('Home')
+const visie = byName('Onze visie')
+const historie = byName('Historie & Werkwijze')
+const contact = byName('Contact')
+
+const pUrl = (p: any, fallback: string) => (p ? `/${locale}/${slugOf(p, locale)}` : fallback)
+const nav = [
+  { label: t(home?.title, locale) || 'Home', url: `/${locale}` },
+  { label: t(visie?.title, locale) || 'Onze visie', url: pUrl(visie, '#') },
+  { label: t(historie?.title, locale) || 'Historie & Werkwijze', url: pUrl(historie, '#') },
+  { label: ui('referenties', locale), url: `/${locale}/referenties` },
+  { label: ui('beurzen', locale), url: `/${locale}/beurzen` },
+  { label: t(contact?.title, locale) || 'Contact', url: pUrl(contact, `/${locale}/contact`) },
+]
+
+const favicon = imgUrl(settings?.favicon, 64, 64)
+const footerImg = settings?.footerImage
+const footerImgUrl = footerImg ? imgUrl(footerImg, 1200) : null
+const metaTitle = title ? `${title} — Hoet Design` : 'Hoet Design'
+---
+<!doctype html>
+<html lang={locale} class={`modernbrowser ${locale}`}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{metaTitle}</title>
+  {description && <meta name="description" content={description} />}
+  <link rel="icon" href={favicon ?? '/favicon.ico'} />
+  <link rel="stylesheet" href="/theme/css/compiled.min.css" />
+  <link rel="stylesheet" href="/theme/css/custom.css" />
+</head>
+<body>
+  <header>
+    <div class="header">
+      <div class="row"><div class="columns medium-12 no-relative">
+        <div class="show-mobile">
+          <div class="logo-link"><h1 class="logo"><a href={`/${locale}`} title="Hoet Design">Hoet Design</a></h1></div>
+          <a href="javascript:;" data-panel="nav" class="mobile-nav-icon nav-icon js-nav-toggle"><i class="fa fa-navicon"></i></a>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="base-lang-wrap">
+      {LOCALES.map((l) => (
+        <a href={langUrls?.[l] ?? `/${l}`} class={`lang__item ${l === locale ? 'active' : ''}`}>{l}</a>
+      ))}
+    </div>
+
+    <nav class="navigation mobile-height">
+      <div class="row collapse"><div class="columns relative-block">
+        <h1 class="logo"><a href={`/${locale}`} title="Hoet Design">Hoet Design</a></h1>
+        <ul class="nav">
+          {nav.map((item) => (
+            <li class="nav__item"><a href={item.url} title={item.label}>{item.label}</a></li>
+          ))}
+        </ul>
+      </div></div>
+    </nav>
+  </header>
+
+  <div class="main-content-wrap"><div class="main-wrap"><div id="mainContentWrap">
+    <slot />
+  </div></div></div>
+
+  {footerImgUrl && (
+    <div class="footer-image">
+      <img src={footerImgUrl} alt={imgAlt(footerImg, locale, 'Hoet Design')} />
+    </div>
+  )}
+
+  <footer class="footer">
+    <div class="bottombar mobile-center"><div class="row"><div class="columns large-12">
+      <div class="footer-list">
+        <span class="footer-list-item">&copy; Hoet nv {new Date().getFullYear()}</span>
+        <a href={`/${locale}/voorwaarden`} class="footer-list-item">Voorwaarden</a>
+        <a href={`/${locale}/privacy`} class="footer-list-item">privacy</a>
+        <a href={`/${locale}/imprint`} class="footer-list-item">imprint</a>
+      </div>
+    </div></div></div>
+  </footer>
+
+  <script is:inline>
+    // mobile nav toggle (body[data-panel='nav']) — no jQuery
+    document.querySelectorAll('.js-nav-toggle').forEach(function (b) {
+      b.addEventListener('click', function (e) {
+        e.preventDefault();
+        var on = document.body.getAttribute('data-panel') === 'nav';
+        document.body.setAttribute('data-panel', on ? '' : 'nav');
+      });
+    });
+    // sticky desktop nav: the live adds .stuck (fixed bar + centred logo) on desktop
+    (function () {
+      var nav = document.querySelector('.navigation');
+      if (!nav) return;
+      var sync = function () {
+        if (window.innerWidth > 1130) nav.classList.add('stuck');
+        else nav.classList.remove('stuck');
+      };
+      sync();
+      window.addEventListener('resize', sync);
+    })();
+    // fade sliders ([data-slider]) — replaces slick, one slide visible at a time
+    document.querySelectorAll('[data-slider]').forEach(function (sl) {
+      var items = sl.querySelectorAll('.ref-slider__item, .hd-slide');
+      if (items.length < 1) return;
+      var i = 0;
+      items[0].classList.add('is-active');
+      if (items.length < 2) return;
+      setInterval(function () {
+        items[i].classList.remove('is-active');
+        i = (i + 1) % items.length;
+        items[i].classList.add('is-active');
+      }, 4000);
+    });
+  </script>
+</body>
+</html>

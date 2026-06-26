@@ -1,0 +1,13 @@
+---
+import TextBlock from './blocks/TextBlock.astro'
+import PhotoTextBlock from './blocks/PhotoTextBlock.astro'
+import HeroBlock from './blocks/HeroBlock.astro'
+import SliderBlock from './blocks/SliderBlock.astro'
+import type { Locale } from '../lib/sanity'
+const { blocks = [], locale } = Astro.props as { blocks: any[]; locale: Locale }
+const map: Record<string, any> = { textBlock: TextBlock, photoTextBlock: PhotoTextBlock, heroBlock: HeroBlock, sliderBlock: SliderBlock }
+---
+{blocks.filter((b) => b?.active !== false).map((block) => {
+  const C = map[block._type]
+  return C ? <C block={block} locale={locale} /> : null
+})}

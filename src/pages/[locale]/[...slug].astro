@@ -1,0 +1,26 @@
+---
+import Base from '../../layouts/Base.astro'
+import Blocks from '../../components/Blocks.astro'
+import { LOCALES, getPages, type Locale } from '../../lib/sanity'
+import { t, slugOf } from '../../lib/content'
+export async function getStaticPaths() {
+  const pages = await getPages()
+  const paths: any[] = []
+  for (const locale of LOCALES) {
+    for (const page of pages) {
+      const s = slugOf(page, locale)
+      if (!s) continue
+      paths.push({ params: { locale, slug: s }, props: { page } })
+    }
+  }
+  return paths
+}
+const { page } = Astro.props as { page: any }
+const locale = Astro.params.locale as Locale
+const title = t(page.seo?.metaTitle, locale) || t(page.title, locale)
+const description = t(page.seo?.metaDescription, locale)
+const langUrls = Object.fromEntries(LOCALES.map((l) => [l, `/${l}/${slugOf(page, l) || slugOf(page, 'nl')}`]))
+---
+<Base locale={locale} title={title} description={description} langUrls={langUrls}>
+  <Blocks blocks={page.blocks ?? []} locale={locale} />
+</Base>

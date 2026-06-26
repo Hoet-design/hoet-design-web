@@ -1,0 +1,43 @@
+---
+import { pt, t, imgUrl, imgAlt } from '../../lib/content'
+import type { Locale } from '../../lib/sanity'
+const { block, locale } = Astro.props as { block: any; locale: Locale }
+
+const pos = block.photoPosition ?? 'right'
+const top = pos === 'top'
+const photoLeft = pos === 'left'
+const bg = block.background ?? 'white'
+const secClass = bg === 'white' ? 'content-section--white' : bg === 'black' ? 'content-section--black' : ''
+
+const title = t(block.title, locale)
+const subtitle = t(block.subtitle, locale)
+const html = pt(block.text, locale)
+const src = imgUrl(block.image, top ? 1400 : 900)
+const alt = imgAlt(block.image, locale, title)
+const colClass = top ? 'columns medium-12' : 'columns medium-6 portrait-6'
+---
+<section class={`content-section content-section--alternate ${secClass}`}>
+  <div class="row"><div class="columns"><div class="container"><div class="row">
+
+    {top && src && (
+      <div class="columns medium-12"><div class="detail-pagina__pic"><img src={src} alt={alt} /></div></div>
+    )}
+
+    {photoLeft && !top && src && (
+      <div class="columns medium-6 portrait-6"><div class="detail-pagina__pic"><img src={src} alt={alt} /></div></div>
+    )}
+
+    <div class={colClass}>
+      <div class="page-content detail-content limit-width">
+        {title && <h2>{title}</h2>}
+        {subtitle && <p class="photo-block__subtitle">{subtitle}</p>}
+        <Fragment set:html={html} />
+      </div>
+    </div>
+
+    {!photoLeft && !top && src && (
+      <div class="columns medium-6 portrait-6 mobileMarginTop2"><div class="detail-pagina__pic"><img src={src} alt={alt} /></div></div>
+    )}
+
+  </div></div></div></div>
+</section>
