@@ -51,7 +51,7 @@
 .hd-home-hero .play-button i { font-size:2rem; margin-left:.25rem; }
 .hd-home-hero .scroll-down { position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%); color:#fff; font-size:4rem; z-index:2; animation:hd-bounce 1.8s infinite; }
 @keyframes hd-bounce { 0%,100%{ transform:translateX(-50%) translateY(0);} 50%{ transform:translateX(-50%) translateY(8px);} }
-@media (max-width:1130px){ .hd-home-hero { height:62vh; } }
+@media (max-width:1130px){ .hd-home-hero { height:100vh; } }
 
 /* Contact page */
 .form.contact .field_row { margin-bottom:1rem; }
