@@ -68,3 +68,9 @@
   .header .show-mobile { position:relative; height:65px; }
   .header .show-mobile .mobile-nav-icon { top:50%; -webkit-transform:translateY(-50%); transform:translateY(-50%); }
 }
+
+/* Click-to-play hero: fade the play button while playing (reappears on hover to pause) */
+.hd-home-hero .play-button { transition:opacity .3s ease, background .2s ease, color .2s ease; }
+.hd-home-hero.is-playing .play-button { opacity:0; }
+.hd-home-hero.is-playing:hover .play-button { opacity:1; }
+.hd-home-hero .play-button, .hd-home-hero .scroll-down { text-decoration:none; }

@@ -21,7 +21,7 @@ const br = (s: string) => s.split('\n').join('<br>')
   {/* Full-height video hero ABOVE the nav (so the menu sits at the bottom of the first screen, like the live) */}
   <div slot="hero" class="hd-hero-wrap">
     <section class="hd-home-hero">
-      <video id="mainVideo" autoplay loop muted playsinline poster="/media/home-hero-poster.jpg">
+      <video id="mainVideo" loop muted playsinline preload="none" poster="/media/home-hero-poster.jpg">
         <source src="/media/home-hero.mp4" type="video/mp4" />
       </video>
       <a href="javascript:;" class="play-button js-play-button" aria-label="Play"><div class="play-button__inner"><i class="fa fa-play"></i></div></a>
@@ -55,15 +55,17 @@ const br = (s: string) => s.split('\n').join('<br>')
   <script is:inline>
     (function () {
       var video = document.getElementById('mainVideo');
+      var hero = document.querySelector('.hd-home-hero');
       var play = document.querySelector('.js-play-button');
       var icon = play && play.querySelector('i');
       if (video && play) {
         play.addEventListener('click', function (e) {
           e.preventDefault();
-          video.muted = !video.muted;            // play button toggles sound
-          if (video.paused) video.play();
-          if (icon) icon.className = video.muted ? 'fa fa-play' : 'fa fa-pause';
+          if (video.paused) { video.muted = false; video.play(); } // play with sound
+          else { video.pause(); }
         });
+        video.addEventListener('play', function () { if (icon) icon.className = 'fa fa-pause'; if (hero) hero.classList.add('is-playing'); });
+        video.addEventListener('pause', function () { if (icon) icon.className = 'fa fa-play'; if (hero) hero.classList.remove('is-playing'); });
       }
       var down = document.querySelector('.js-scroll-down');
       if (down) down.addEventListener('click', function (e) {
