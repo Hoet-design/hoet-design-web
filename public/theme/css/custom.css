@@ -78,3 +78,7 @@
 .hd-home-hero.is-playing .play-button { opacity:0; }
 .hd-home-hero.is-playing:hover .play-button { opacity:1; }
 .hd-home-hero .play-button, .hd-home-hero .scroll-down { text-decoration:none; }
+
+/* Hoet logo top-left of the home hero (matches the live .hero-logo) */
+.hd-home-hero .hero-logo { position:absolute; top:0; left:0; width:101px; height:87px; background:url('/theme/images/skin/default/logo-hoet.png') no-repeat 50% 50%; background-size:70%; z-index:3; text-indent:-9999px; overflow:hidden; }
+@media (max-width:900px){ .hd-home-hero .hero-logo { display:none; } }
