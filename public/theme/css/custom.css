@@ -44,11 +44,11 @@
 /* Video is a few px taller than the hero so its own top/bottom edges are clipped by overflow:hidden
    — that removes the light hairline at the seam without adding any black band. */
 .hd-home-hero video { display:block; width:100%; height:calc(100% + 6px); margin-top:-3px; object-fit:cover; }
-.hd-home-hero .play-button { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:92px; height:92px; border-radius:50%; border:2px solid #fff; display:flex; align-items:center; justify-content:center; color:#fff; z-index:2; transition:background .2s ease,color .2s ease; }
+.hd-home-hero .play-button { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:100px; height:100px; border-radius:50%; border:2px solid #fff; display:flex; align-items:center; justify-content:center; color:#fff; z-index:2; transition:background .2s ease,color .2s ease; }
 .hd-home-hero .play-button__inner { display:flex; align-items:center; justify-content:center; width:100%; height:100%; }
 .hd-home-hero .play-button:hover { background:#fff; color:#000; }
 .hd-home-hero .play-button i { font-size:2rem; margin-left:.25rem; }
-.hd-home-hero .scroll-down { position:absolute; bottom:1.4rem; left:50%; transform:translateX(-50%); color:#fff; font-size:2rem; z-index:2; animation:hd-bounce 1.8s infinite; }
+.hd-home-hero .scroll-down { position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%); color:#fff; font-size:4rem; z-index:2; animation:hd-bounce 1.8s infinite; }
 @keyframes hd-bounce { 0%,100%{ transform:translateX(-50%) translateY(0);} 50%{ transform:translateX(-50%) translateY(8px);} }
 @media (max-width:1130px){ .hd-home-hero { height:62vh; } }
 
