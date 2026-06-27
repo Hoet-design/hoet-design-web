@@ -56,3 +56,12 @@
 .contact-cta .main__title.hero, .contact-cta a { color:#fff; }
 .contact-cta__line a { text-decoration:none; margin:0 .4rem; }
 .contact-cta__sep { opacity:.5; }
+
+/* Mobile top bar: keep it fixed at the top (the full-height home hero would otherwise push
+   it down) and give .show-mobile a real height so the absolutely-positioned logo + hamburger
+   anchor inside the 65px bar instead of the tall hero. */
+@media (max-width:900px){
+  header > .header { position:fixed; top:0; left:0; right:0; z-index:60; }
+  .header .show-mobile { position:relative; height:65px; }
+  .header .show-mobile .mobile-nav-icon { top:50%; -webkit-transform:translateY(-50%); transform:translateY(-50%); }
+}
