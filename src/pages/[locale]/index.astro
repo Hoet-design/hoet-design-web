@@ -1,8 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro'
 import ReferenceList from '../../components/ReferenceList.astro'
-import { LOCALES, getPage, getReferences, type Locale } from '../../lib/sanity'
-import { t } from '../../lib/content'
+import { LOCALES, getPage, getReferences, getFairs, type Locale } from '../../lib/sanity'
+import { t, imgUrl } from '../../lib/content'
 import { ui } from '../../lib/ui'
 import { HOME_INTRO } from '../../lib/home'
 export function getStaticPaths() {
@@ -11,6 +11,7 @@ export function getStaticPaths() {
 const locale = Astro.params.locale as Locale
 const page = await getPage('Home')
 const refs = await getReferences()
+const fairs = await getFairs()
 const title = t(page?.seo?.metaTitle, locale) || t(page?.title, locale)
 const description = t(page?.seo?.metaDescription, locale)
 const langUrls = Object.fromEntries(LOCALES.map((l) => [l, `/${l}`]))
@@ -40,6 +41,27 @@ const br = (s: string) => s.split('\n').join('<br>')
         {intro.h2 && <h2 style="text-align:center;" set:html={br(intro.h2)} />}
         <div style="text-align:center;" set:html={br(intro.para2)} />
       </div>
+    </div></div>
+  </section>
+
+  {/* International fair participations (like the live) — shows a placeholder line while there are none */}
+  <section class="content-section content-section--black">
+    <div class="row"><div class="columns">
+      <h1 class="main__title">{ui('beursdeelnames', locale)}</h1>
+      {fairs.length === 0 ? (
+        <p class="page-content" style="text-align:center;opacity:.8;">{ui('geenBeurzen', locale)}</p>
+      ) : (
+        <div class="section"><div class="grid-wrap grid-wrap--3">
+          {fairs.map((f: any) => (
+            <div class="grid-block grid-block--beurs"><div class="inner-block">
+              <div class="block__title">{t(f.title, locale)}</div>
+              {t(f.subtitle, locale) && <div class="block__subtitle">{t(f.subtitle, locale)}</div>}
+              {t(f.description, locale) && <div class="block__descr" set:html={t(f.description, locale).replace(/\n/g, '<br>')} />}
+              {imgUrl(f.logo, 500) && <div class="grid-pic" style={`background-image:url('${imgUrl(f.logo, 500)}')`} role="img" aria-label={t(f.title, locale)} />}
+            </div></div>
+          ))}
+        </div></div>
+      )}
     </div></div>
   </section>
 

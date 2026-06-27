@@ -8,6 +8,7 @@ const STRINGS: Record<string, Record<Locale, string>> = {
   terug: { nl: 'Terug', en: 'Back', fr: 'Retour', de: 'Zurück' },
   terugOverzicht: { nl: 'Terug naar overzicht', en: 'Back to overview', fr: "Retour à l'aperçu", de: 'Zurück zur Übersicht' },
   geenBeurzen: { nl: 'Er zijn momenteel geen beurzen gepland.', en: 'There are currently no fairs scheduled.', fr: "Aucun salon n'est actuellement prévu.", de: 'Derzeit sind keine Messen geplant.' },
+  beursdeelnames: { nl: 'Internationale beursdeelnames', en: 'International fair participations', fr: 'Participations aux salons internationaux', de: 'Internationale Messebeteiligungen' },
   contactTitle: { nl: 'Contacteer ons', en: 'Contact us', fr: 'Contactez-nous', de: 'Kontaktieren Sie uns' },
   contactIntro: {
     nl: 'Hebt u vragen voor ontwerpbureau Hoet te Brugge, België? Neem dan contact op via e-mail op info@hoet.be of telefonisch op +32 (0)50 33 43 02.',

@@ -5,7 +5,8 @@
 
 /* Rich-text divider + black-section text colour (safety). */
 .content-divider { border:none; border-top:1px solid rgba(0,0,0,.15); margin:2rem 0; }
-.content-section--black, .content-section--black .page-content, .content-section--black h1, .content-section--black h2 { color:#fff; }
+.content-section--black, .content-section--black .page-content, .content-section--black h1, .content-section--black h2,
+.content-section--black h1.main__title, .content-section--black h2.main__title, .content-section--black .main__title { color:#fff; }
 .photo-block__subtitle { opacity:.7; margin:.25rem 0 1rem; }
 
 /* Home video hero */
