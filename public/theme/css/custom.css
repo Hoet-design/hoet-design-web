@@ -91,7 +91,7 @@
 }
 
 /* Cookie consent banner (matches the live's look; remembers the choice in localStorage) */
-.cookie-banner { position:fixed; right:0; bottom:0; z-index:200; width:500px; max-width:100%; background:#f3f2f0; color:#1a1a1a; padding:2rem; box-shadow:0 10px 40px rgba(0,0,0,.25); }
+.cookie-banner { position:fixed; right:0; bottom:0; z-index:200; width:500px; max-width:100%; background:#f3f2f0; color:#1a1a1a; padding:2rem 3rem; box-shadow:0 10px 40px rgba(0,0,0,.25); font-family:-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; }
 .cookie-banner[hidden] { display:none; }
 .cookie-banner__title { margin:0 0 .8rem; font-size:24px; font-weight:600; line-height:1.5; }
 .cookie-banner__text { margin:0 0 1.25rem; font-size:16px; line-height:1.5; }
