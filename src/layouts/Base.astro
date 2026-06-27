@@ -31,6 +31,14 @@ const nav = [
   { label: t(contact?.title, locale) || 'Contact', url: pUrl(contact, `/${locale}/contact`) },
 ]
 
+// mark the current nav item active (home = exact, others = section prefix)
+const current = Astro.url.pathname.replace(/\/+$/, '') || `/${locale}`
+const isActive = (url: string) => {
+  const u = url.replace(/\/+$/, '')
+  if (u === `/${locale}`) return current === `/${locale}`
+  return current === u || current.startsWith(u + '/')
+}
+
 const favicon = imgUrl(settings?.favicon, 64, 64)
 const footerImg = settings?.footerImage
 const footerImgUrl = footerImg ? imgUrl(footerImg, 1200) : null
@@ -76,7 +84,7 @@ const metaTitle = title ? `${title} — Hoet Design` : 'Hoet Design'
           <h1 class="logo"><a href={`/${locale}`} title="Hoet Design">Hoet Design</a></h1>
           <ul class="nav">
             {nav.map((item) => (
-              <li class="nav__item"><a href={item.url} title={item.label}>{item.label}</a></li>
+              <li class={`nav__item ${isActive(item.url) ? 'active' : ''}`}><a href={item.url} title={item.label}>{item.label}</a></li>
             ))}
           </ul>
         </div></div>
