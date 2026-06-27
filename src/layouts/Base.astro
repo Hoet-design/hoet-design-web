@@ -2,6 +2,7 @@
 import { getPages, getSettings, LOCALES, type Locale } from '../lib/sanity'
 import { t, slugOf, imgUrl, imgAlt } from '../lib/content'
 import { ui } from '../lib/ui'
+import CookieBanner from '../components/CookieBanner.astro'
 
 interface Props {
   locale: Locale
@@ -112,6 +113,8 @@ const metaTitle = title ? `${title} — Hoet Design` : 'Hoet Design'
       </div>
     </div></div></div>
   </footer>
+
+  <CookieBanner locale={locale} />
 
   <script is:inline>
     // mobile nav toggle (body[data-panel='nav']) — no jQuery

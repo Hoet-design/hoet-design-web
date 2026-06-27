@@ -89,3 +89,15 @@
 @media (max-width:900px){
   .hd-hero-wrap ~ header > .header { background:transparent; }
 }
+
+/* Cookie consent banner (matches the live's look; remembers the choice in localStorage) */
+.cookie-banner { position:fixed; left:1.25rem; bottom:1.25rem; z-index:200; max-width:380px; background:#f3f2f0; color:#1a1a1a; padding:1.6rem 1.6rem 1.4rem; box-shadow:0 10px 40px rgba(0,0,0,.25); }
+.cookie-banner[hidden] { display:none; }
+.cookie-banner__title { margin:0 0 .7rem; font-size:1.35rem; font-weight:700; }
+.cookie-banner__text { margin:0 0 1.1rem; font-size:.86rem; line-height:1.55; }
+.cookie-banner__actions { display:flex; gap:.5rem; flex-wrap:wrap; }
+.cookie-banner__btn { background:#1a1a1a; color:#fff; border:0; padding:.6rem 1.1rem; font:inherit; cursor:pointer; }
+.cookie-banner__btn:hover { background:#000; }
+.cookie-banner__prefs { display:inline-block; margin-top:.7rem; background:#dcdbd8; color:#1a1a1a; border:0; padding:.55rem 1rem; font:inherit; font-weight:700; cursor:pointer; }
+.cookie-banner__prefs:hover { background:#cfcecb; }
+@media (max-width:640px){ .cookie-banner { left:0; right:0; bottom:0; max-width:none; } }
