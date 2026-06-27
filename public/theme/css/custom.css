@@ -83,3 +83,9 @@
 /* Hoet logo top-left of the home hero (matches the live .hero-logo) */
 .hd-home-hero .hero-logo { position:absolute; top:0; left:0; width:101px; height:87px; background:url('/theme/images/skin/default/logo-hoet.png') no-repeat 50% 50%; background-size:70%; z-index:3; text-indent:-9999px; overflow:hidden; }
 @media (max-width:900px){ .hd-home-hero .hero-logo { display:none; } }
+
+/* Home (mobile): transparent top bar so logo/phone/hamburger float over the video — like the live.
+   Scoped via the hero-wrap that precedes the header on the home; inner pages keep the black bar. */
+@media (max-width:900px){
+  .hd-hero-wrap ~ header > .header { background:transparent; }
+}
