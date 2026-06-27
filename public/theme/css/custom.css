@@ -37,9 +37,13 @@
    Use a custom wrapper class (NOT the vendored .main-slider-wrap, which forces its own
    height/overflow/grey bg and caused a white seam against the nav). margin-bottom:-1px lets the
    black nav cover any sub-pixel seam. */
-.hd-hero-wrap { width:100%; background:#000; line-height:0; margin-bottom:-1px; }
-.hd-home-hero { position:relative; width:100%; height:calc(100vh - 65px); min-height:420px; background:#000; overflow:hidden; }
-.hd-home-hero video { display:block; width:100%; height:100%; object-fit:cover; }
+.hd-hero-wrap { width:100%; background:#000; line-height:0; }
+/* hero a touch shorter than (100vh - navHeight) so the nav's bottom lands just past the fold —
+   otherwise a sliver of the white content section peeks under the menu bar. */
+.hd-home-hero { position:relative; width:100%; height:calc(100vh - 62px); min-height:420px; background:#000; overflow:hidden; }
+/* Video is a few px taller than the hero so its own top/bottom edges are clipped by overflow:hidden
+   — that removes the light hairline at the seam without adding any black band. */
+.hd-home-hero video { display:block; width:100%; height:calc(100% + 6px); margin-top:-3px; object-fit:cover; }
 .hd-home-hero .play-button { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:92px; height:92px; border-radius:50%; border:2px solid #fff; display:flex; align-items:center; justify-content:center; color:#fff; z-index:2; transition:background .2s ease,color .2s ease; }
 .hd-home-hero .play-button__inner { display:flex; align-items:center; justify-content:center; width:100%; height:100%; }
 .hd-home-hero .play-button:hover { background:#fff; color:#000; }
