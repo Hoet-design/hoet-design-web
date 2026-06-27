@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Vergelijk — live vs dev (hoet-design)</title>
+<style>
+  :root { --bar:#111; --accent:#3b82f6; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; height:100%; font:14px/1.4 system-ui,sans-serif; background:#222; color:#eee; }
+  body { display:flex; flex-direction:column; }
+  .toolbar { background:var(--bar); padding:.5rem .75rem; display:flex; gap:.6rem; align-items:center; flex-wrap:wrap; border-bottom:1px solid #000; }
+  .toolbar label { color:#9aa; font-size:.78rem; text-transform:uppercase; letter-spacing:.04em; }
+  .toolbar select, .toolbar input[type=range] { font:inherit; }
+  .toolbar select { background:#222; color:#eee; border:1px solid #444; border-radius:4px; padding:.3rem .4rem; }
+  .toolbar .grow { flex:1; }
+  .toolbar .urls { font-size:.72rem; color:#789; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:42vw; }
+  .toolbar button { background:#333; color:#eee; border:1px solid #555; border-radius:4px; padding:.3rem .6rem; cursor:pointer; }
+  .toolbar button:hover { background:#444; }
+  .stage { flex:1; position:relative; overflow:auto; background:#2a2a2a; }
+  /* side-by-side */
+  .stage.side { display:flex; }
+  .stage.side .pane { flex:1; min-width:0; display:flex; flex-direction:column; border-right:2px solid #000; }
+  .stage.side .pane:last-child { border-right:0; }
+  .pane .label { background:#000; color:#cde; font-size:.72rem; padding:.25rem .6rem; text-align:center; letter-spacing:.05em; }
+  .frame-wrap { flex:1; overflow:auto; background:#fff; display:flex; justify-content:center; }
+  iframe { border:0; background:#fff; }
+  /* overlay */
+  .stage.overlay { display:block; }
+  .stage.overlay .pane { position:absolute; inset:0; }
+  .stage.overlay .pane .label { position:absolute; top:0; left:50%; transform:translateX(-50%); z-index:5; opacity:.5; }
+  .stage.overlay .frame-wrap { height:100%; }
+  .stage.overlay #paneLive { z-index:3; }
+  .stage.overlay #paneDev  { z-index:2; }
+  .hide { display:none !important; }
+</style>
+</head>
+<body>
+  <div class="toolbar">
+    <label>Pagina</label>
+    <select id="page"></select>
+    <label>Taal</label>
+    <select id="locale"><option>nl</option><option>fr</option><option>en</option><option>de</option></select>
+    <label>Weergave</label>
+    <select id="mode"><option value="side">Naast elkaar</option><option value="overlay">Overlay (fade)</option></select>
+    <label>Breedte</label>
+    <select id="width">
+      <option value="0">Volledig</option>
+      <option value="1280">Desktop 1280</option>
+      <option value="768">Tablet 768</option>
+      <option value="390">Mobiel 390</option>
+    </select>
+    <span id="fadeWrap" class="hide"><label>Fade live</label><input id="fade" type="range" min="0" max="100" value="50" /></span>
+    <button id="reload">↻ Herlaad</button>
+    <span class="grow"></span>
+    <span class="urls" id="urls"></span>
+  </div>
+
+  <div class="stage side" id="stage">
+    <div class="pane" id="paneLive">
+      <div class="label">LIVE — hoet-design.com</div>
+      <div class="frame-wrap"><iframe id="live" title="live"></iframe></div>
+    </div>
+    <div class="pane" id="paneDev">
+      <div class="label">DEV — localhost</div>
+      <div class="frame-wrap"><iframe id="dev" title="dev"></iframe></div>
+    </div>
+  </div>
+
+<script>
+  // name, and the path (without locale) on each site. Empty dev path = the home (/{locale}).
+  const PAGES = [
+    { name: 'Home',                 live: 'home',             dev: '' },
+    { name: 'Onze visie',           live: 'waarom-hoet',      dev: 'onze-visie' },
+    { name: 'Historie & Werkwijze', live: 'werkwijze',        dev: 'historie-werkwijze' },
+    { name: 'Referenties',          live: 'referenties',      dev: 'referenties' },
+    { name: 'Referentie — Morà',    live: 'referenties/mora', dev: 'referenties/mora' },
+    { name: 'Beurzen',              live: 'beurzen',          dev: 'beurzen' },
+    { name: 'Contact',              live: 'contact',          dev: 'contact' },
+    { name: 'Voorwaarden',          live: 'voorwaarden',      dev: 'voorwaarden' },
+    { name: 'Privacy',              live: 'privacy',          dev: 'privacy' },
+    { name: 'Imprint',              live: 'imprint',          dev: 'imprint' },
+  ];
+  const LIVE_BASE = 'https://www.hoet-design.com';
+  const DEV_BASE  = location.origin; // the dev server that serves this file
+
+  const $ = (id) => document.getElementById(id);
+  const pageSel = $('page'), localeSel = $('locale'), modeSel = $('mode'), widthSel = $('width');
+  const live = $('live'), dev = $('dev'), stage = $('stage'), urls = $('urls');
+  const fadeWrap = $('fadeWrap'), fade = $('fade');
+
+  PAGES.forEach((p, i) => { const o = document.createElement('option'); o.value = i; o.textContent = p.name; pageSel.appendChild(o); });
+
+  function build(base, locale, path) { return base + '/' + locale + (path ? '/' + path : ''); }
+
+  function applyWidth() {
+    const w = widthSel.value;
+    [live, dev].forEach((f) => {
+      if (w === '0') { f.style.width = '100%'; f.style.height = '100%'; }
+      else { f.style.width = w + 'px'; f.style.height = '100%'; }
+    });
+  }
+
+  function applyMode() {
+    const overlay = modeSel.value === 'overlay';
+    stage.className = 'stage ' + (overlay ? 'overlay' : 'side');
+    fadeWrap.classList.toggle('hide', !overlay);
+    if (overlay) applyFade();
+    else $('paneLive').style.opacity = 1;
+  }
+  function applyFade() { $('paneLive').style.opacity = fade.value / 100; }
+
+  function load() {
+    const p = PAGES[pageSel.value], loc = localeSel.value;
+    const liveUrl = build(LIVE_BASE, loc, p.live);
+    const devUrl  = build(DEV_BASE,  loc, p.dev);
+    live.src = liveUrl; dev.src = devUrl;
+    urls.textContent = liveUrl + '   |   ' + devUrl;
+  }
+
+  pageSel.onchange = load; localeSel.onchange = load;
+  modeSel.onchange = applyMode; widthSel.onchange = applyWidth;
+  fade.oninput = applyFade;
+  $('reload').onclick = load;
+
+  // make the frame-wrap fill height in side mode
+  applyMode(); applyWidth(); load();
+</script>
+</body>
+</html>
