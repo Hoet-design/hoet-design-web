@@ -17,13 +17,17 @@ const langUrls = Object.fromEntries(LOCALES.map((l) => [l, `/${l}`]))
 const intro = HOME_INTRO[locale]
 const br = (s: string) => s.split('\n').join('<br>')
 ---
-<Base locale={locale} title={title} description={description} langUrls={langUrls} isHome>
-  {/* Video hero (under the fixed nav) */}
-  <section class="hd-home-hero">
-    <video id="mainVideo" autoplay loop muted playsinline poster="/media/home-hero-poster.jpg">
-      <source src="/media/home-hero.mp4" type="video/mp4" />
-    </video>
-  </section>
+<Base locale={locale} title={title} description={description} langUrls={langUrls}>
+  {/* Full-height video hero ABOVE the nav (so the menu sits at the bottom of the first screen, like the live) */}
+  <div slot="hero" class="main-slider-wrap">
+    <section class="hd-home-hero">
+      <video id="mainVideo" autoplay loop muted playsinline poster="/media/home-hero-poster.jpg">
+        <source src="/media/home-hero.mp4" type="video/mp4" />
+      </video>
+      <a href="javascript:;" class="play-button js-play-button" aria-label="Play"><div class="play-button__inner"><i class="fa fa-play"></i></div></a>
+      <a href="javascript:;" class="scroll-down js-scroll-down" aria-label="Scroll"><i class="fa fa-angle-double-down"></i></a>
+    </section>
+  </div>
 
   {/* Intro (centred), ported from the live home */}
   <section id="homeContent" class="content-section content-section--white">
@@ -47,4 +51,27 @@ const br = (s: string) => s.split('\n').join('<br>')
       </div>
     </div></div>
   </section>
+
+  <script is:inline>
+    (function () {
+      var video = document.getElementById('mainVideo');
+      var play = document.querySelector('.js-play-button');
+      var icon = play && play.querySelector('i');
+      if (video && play) {
+        play.addEventListener('click', function (e) {
+          e.preventDefault();
+          video.muted = !video.muted;            // play button toggles sound
+          if (video.paused) video.play();
+          if (icon) icon.className = video.muted ? 'fa fa-play' : 'fa fa-pause';
+        });
+      }
+      var down = document.querySelector('.js-scroll-down');
+      if (down) down.addEventListener('click', function (e) {
+        e.preventDefault();
+        var hero = document.querySelector('.main-slider-wrap');
+        var y = hero ? hero.getBoundingClientRect().bottom + window.scrollY : window.innerHeight;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      });
+    })();
+  </script>
 </Base>

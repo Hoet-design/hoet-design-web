@@ -48,6 +48,7 @@ const metaTitle = title ? `${title} — Hoet Design` : 'Hoet Design'
   <link rel="stylesheet" href="/theme/css/custom.css" />
 </head>
 <body>
+  <slot name="hero" />
   <header>
     <div class="header">
       <div class="row"><div class="columns medium-12 no-relative">
@@ -64,19 +65,21 @@ const metaTitle = title ? `${title} — Hoet Design` : 'Hoet Design'
       ))}
     </div>
 
-    <nav class="navigation mobile-height">
-      <div class="row collapse"><div class="columns relative-block">
-        <h1 class="logo"><a href={`/${locale}`} title="Hoet Design">Hoet Design</a></h1>
-        <ul class="nav">
-          {nav.map((item) => (
-            <li class="nav__item"><a href={item.url} title={item.label}>{item.label}</a></li>
-          ))}
-        </ul>
-      </div></div>
-    </nav>
+    <div class="sticky-wrapper">
+      <nav class="navigation mobile-height">
+        <div class="row collapse"><div class="columns relative-block">
+          <h1 class="logo"><a href={`/${locale}`} title="Hoet Design">Hoet Design</a></h1>
+          <ul class="nav">
+            {nav.map((item) => (
+              <li class="nav__item"><a href={item.url} title={item.label}>{item.label}</a></li>
+            ))}
+          </ul>
+        </div></div>
+      </nav>
+    </div>
   </header>
 
-  <div class={`main-content-wrap ${isHome ? 'is-home' : ''}`}><div class="main-wrap"><div id="mainContentWrap">
+  <div class="main-content-wrap"><div class="main-wrap"><div id="mainContentWrap">
     <slot />
   </div></div></div>
 
@@ -106,16 +109,28 @@ const metaTitle = title ? `${title} — Hoet Design` : 'Hoet Design'
         document.body.setAttribute('data-panel', on ? '' : 'nav');
       });
     });
-    // sticky desktop nav: the live adds .stuck (fixed bar + centred logo) on desktop
+    // sticky desktop nav: .stuck when the nav bar reaches the top (like the live).
+    // On the home it sits below the hero and sticks on scroll; on inner pages it is at
+    // the top so it sticks immediately. The wrapper holds the nav height to avoid a jump.
     (function () {
-      var nav = document.querySelector('.navigation');
-      if (!nav) return;
-      var sync = function () {
-        if (window.innerWidth > 1130) nav.classList.add('stuck');
-        else nav.classList.remove('stuck');
+      var wrap = document.querySelector('.sticky-wrapper');
+      if (!wrap) return;
+      var nav = wrap.querySelector('.navigation');
+      var threshold = 0, navH = 0;
+      var isDesktop = function () { return window.innerWidth > 1130; };
+      var onScroll = function () {
+        if (!isDesktop()) { nav.classList.remove('stuck'); wrap.style.height = ''; return; }
+        if (window.scrollY >= threshold) { nav.classList.add('stuck'); wrap.style.height = navH + 'px'; }
+        else { nav.classList.remove('stuck'); wrap.style.height = ''; }
       };
-      sync();
-      window.addEventListener('resize', sync);
+      var measure = function () {
+        nav.classList.remove('stuck'); wrap.style.height = '';
+        threshold = wrap.offsetTop; navH = nav.offsetHeight;
+        onScroll();
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', measure);
+      measure();
     })();
     // fade sliders ([data-slider]) — replaces slick, one slide visible at a time
     document.querySelectorAll('[data-slider]').forEach(function (sl) {

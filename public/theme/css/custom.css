@@ -26,15 +26,24 @@
 .ref-wrap .ref__block .ref-slider .ref-slider__item { position:absolute; top:0; left:0; float:none; transition:opacity .9s ease; }
 .ref-wrap .ref__block .ref-slider .ref-slider__item.is-active { opacity:1; }
 
-/* Desktop sticky nav: offset content below the fixed .navigation.stuck bar (matches live ~97px) */
+/* Desktop nav: sits in flow inside .sticky-wrapper, becomes .stuck (fixed top) once it
+   reaches the top — like the live. JS sets the wrapper height when stuck so nothing jumps.
+   The logo is centred in BOTH states (the vendored CSS only centres it when .stuck). */
 @media (min-width:1131px){
-  .main-content-wrap { padding-top:97px; }
+  .navigation h1.logo { top:50%; -webkit-transform:translate(0,-50%); transform:translate(0,-50%); }
 }
 
-/* Home: video hero sits under the fixed nav (no content offset) */
-@media (min-width:1131px){ .main-content-wrap.is-home { padding-top:0; } }
-.hd-home-hero { width:100%; line-height:0; background:#000; overflow:hidden; }
-.hd-home-hero video { display:block; width:100%; height:auto; }
+/* Home: full-height video hero ABOVE the nav, so the menu sits at the bottom of the first screen */
+.main-slider-wrap { width:100%; }
+.hd-home-hero { position:relative; width:100%; height:calc(100vh - 65px); min-height:420px; background:#000; overflow:hidden; }
+.hd-home-hero video { display:block; width:100%; height:100%; object-fit:cover; }
+.hd-home-hero .play-button { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:92px; height:92px; border-radius:50%; border:2px solid #fff; display:flex; align-items:center; justify-content:center; color:#fff; z-index:2; transition:background .2s ease,color .2s ease; }
+.hd-home-hero .play-button__inner { display:flex; align-items:center; justify-content:center; width:100%; height:100%; }
+.hd-home-hero .play-button:hover { background:#fff; color:#000; }
+.hd-home-hero .play-button i { font-size:2rem; margin-left:.25rem; }
+.hd-home-hero .scroll-down { position:absolute; bottom:1.4rem; left:50%; transform:translateX(-50%); color:#fff; font-size:2rem; z-index:2; animation:hd-bounce 1.8s infinite; }
+@keyframes hd-bounce { 0%,100%{ transform:translateX(-50%) translateY(0);} 50%{ transform:translateX(-50%) translateY(8px);} }
+@media (max-width:1130px){ .hd-home-hero { height:62vh; } }
 
 /* Contact page */
 .form.contact .field_row { margin-bottom:1rem; }
