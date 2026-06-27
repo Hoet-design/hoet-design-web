@@ -19,7 +19,7 @@ const br = (s: string) => s.split('\n').join('<br>')
 ---
 <Base locale={locale} title={title} description={description} langUrls={langUrls}>
   {/* Full-height video hero ABOVE the nav (so the menu sits at the bottom of the first screen, like the live) */}
-  <div slot="hero" class="main-slider-wrap">
+  <div slot="hero" class="hd-hero-wrap">
     <section class="hd-home-hero">
       <video id="mainVideo" autoplay loop muted playsinline poster="/media/home-hero-poster.jpg">
         <source src="/media/home-hero.mp4" type="video/mp4" />
@@ -68,7 +68,7 @@ const br = (s: string) => s.split('\n').join('<br>')
       var down = document.querySelector('.js-scroll-down');
       if (down) down.addEventListener('click', function (e) {
         e.preventDefault();
-        var hero = document.querySelector('.main-slider-wrap');
+        var hero = document.querySelector('.hd-hero-wrap');
         var y = hero ? hero.getBoundingClientRect().bottom + window.scrollY : window.innerHeight;
         window.scrollTo({ top: y, behavior: 'smooth' });
       });
