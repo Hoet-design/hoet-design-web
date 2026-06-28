@@ -16,7 +16,7 @@ export async function getStaticPaths() {
 const { ref } = Astro.props as { ref: any }
 const locale = Astro.params.locale as Locale
 const title = t(ref.title, locale)
-const description = t(ref.seo?.metaDescription, locale)
+const description = t(ref.seo?.metaDescription, locale) || `${title} — ${ui('referentiesDesc', locale)}`
 const langUrls = Object.fromEntries(LOCALES.map((l) => [l, `/${l}/referenties/${slugOf(ref, l) || slugOf(ref, 'nl')}`]))
 
 const descHtml = pt(ref.description, locale)

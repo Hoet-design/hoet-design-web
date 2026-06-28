@@ -9,6 +9,18 @@ const STRINGS: Record<string, Record<Locale, string>> = {
   terugOverzicht: { nl: 'Terug naar overzicht', en: 'Back to overview', fr: "Retour à l'aperçu", de: 'Zurück zur Übersicht' },
   geenBeurzen: { nl: 'Er zijn momenteel geen beurzen gepland.', en: 'There are currently no fairs scheduled.', fr: "Aucun salon n'est actuellement prévu.", de: 'Derzeit sind keine Messen geplant.' },
   beursdeelnames: { nl: 'Internationale beursdeelnames', en: 'International fair participations', fr: 'Participations aux salons internationaux', de: 'Internationale Messebeteiligungen' },
+  referentiesDesc: {
+    nl: 'Referenties van ontwerpbureau Hoet: exclusieve brillencollecties ontworpen voor o.a. Theo, Morà, Seiko Xchanger, Hoya-Yuniku en Miga.',
+    en: 'References of Hoet Design Studio: exclusive eyewear collections designed for Theo, Morà, Seiko Xchanger, Hoya-Yuniku, Miga and more.',
+    fr: 'Références du bureau de design Hoet : collections de lunettes exclusives conçues pour Theo, Morà, Seiko Xchanger, Hoya-Yuniku, Miga et plus.',
+    de: 'Referenzen des Design-Studios Hoet: exklusive Brillenkollektionen für Theo, Morà, Seiko Xchanger, Hoya-Yuniku, Miga und mehr.',
+  },
+  beurzenDesc: {
+    nl: 'Internationale beursdeelnames van ontwerpbureau Hoet — ontmoet ons op de optiekbeurzen.',
+    en: 'International fair participations of Hoet Design Studio — meet us at the optical fairs.',
+    fr: 'Participations aux salons internationaux du bureau de design Hoet — rencontrez-nous aux salons de l’optique.',
+    de: 'Internationale Messebeteiligungen des Design-Studios Hoet — treffen Sie uns auf den Optikmessen.',
+  },
   cookieTitle: { nl: 'Wij gebruiken cookies', en: 'We use cookies', fr: 'Nous utilisons des cookies', de: 'Wir verwenden Cookies' },
   cookieText: {
     nl: 'Wij maken gebruik van cookies en andere tracking-technologieën om uw surfervaring op onze website te verbeteren, om gepersonaliseerde inhoud en advertenties te tonen, om ons websiteverkeer te analyseren en om te begrijpen waar onze bezoekers vandaan komen.',

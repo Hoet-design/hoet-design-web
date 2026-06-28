@@ -10,7 +10,7 @@ const locale = Astro.params.locale as Locale
 const fairs = await getFairs()
 const langUrls = Object.fromEntries(LOCALES.map((l) => [l, `/${l}/beurzen`]))
 ---
-<Base locale={locale} title={ui('beurzen', locale)} langUrls={langUrls}>
+<Base locale={locale} title={ui('beurzen', locale)} description={ui('beurzenDesc', locale)} langUrls={langUrls}>
   <section class="content-section content-section--white">
     <div class="row"><div class="columns">
       <h1 class="main__title">{ui('beurzen', locale)}</h1>

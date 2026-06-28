@@ -47,7 +47,7 @@ const br = (s: string) => s.split('\n').join('<br>')
   {/* International fair participations (like the live) — shows a placeholder line while there are none */}
   <section class="content-section content-section--black">
     <div class="row"><div class="columns">
-      <h1 class="main__title">{ui('beursdeelnames', locale)}</h1>
+      <h2 class="main__title">{ui('beursdeelnames', locale)}</h2>
       {fairs.length === 0 ? (
         <p class="page-content" style="text-align:center;opacity:.8;">{ui('geenBeurzen', locale)}</p>
       ) : (
@@ -68,7 +68,7 @@ const br = (s: string) => s.split('\n').join('<br>')
   {/* References (same blocks as /referenties) */}
   <section class="content-section content-section--white">
     <div class="row"><div class="columns">
-      <h1 class="main__title">{ui('referenties', locale)}</h1>
+      <h2 class="main__title">{ui('referenties', locale)}</h2>
       <div class="section">
         <ReferenceList refs={refs} locale={locale} />
       </div>

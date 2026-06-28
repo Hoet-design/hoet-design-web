@@ -1,7 +1,8 @@
 ---
 import { pt, t, imgUrl, imgAlt } from '../../lib/content'
 import type { Locale } from '../../lib/sanity'
-const { block, locale } = Astro.props as { block: any; locale: Locale }
+const { block, locale, headingTag } = Astro.props as { block: any; locale: Locale; headingTag?: string }
+const Heading = (headingTag || 'h2') as any
 
 const pos = block.photoPosition ?? 'right'
 const top = pos === 'top'
@@ -29,7 +30,7 @@ const colClass = top ? 'columns medium-12' : 'columns medium-6 portrait-6'
 
     <div class={colClass}>
       <div class="page-content detail-content limit-width">
-        {title && <h2>{title}</h2>}
+        {title && <Heading>{title}</Heading>}
         {subtitle && <p class="photo-block__subtitle">{subtitle}</p>}
         <Fragment set:html={html} />
       </div>

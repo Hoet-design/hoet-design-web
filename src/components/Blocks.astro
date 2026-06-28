@@ -4,10 +4,11 @@ import PhotoTextBlock from './blocks/PhotoTextBlock.astro'
 import HeroBlock from './blocks/HeroBlock.astro'
 import SliderBlock from './blocks/SliderBlock.astro'
 import type { Locale } from '../lib/sanity'
-const { blocks = [], locale } = Astro.props as { blocks: any[]; locale: Locale }
+const { blocks = [], locale, firstIsH1 } = Astro.props as { blocks: any[]; locale: Locale; firstIsH1?: boolean }
 const map: Record<string, any> = { textBlock: TextBlock, photoTextBlock: PhotoTextBlock, heroBlock: HeroBlock, sliderBlock: SliderBlock }
+const visible = blocks.filter((b) => b?.active !== false)
 ---
-{blocks.filter((b) => b?.active !== false).map((block) => {
+{visible.map((block, i) => {
   const C = map[block._type]
-  return C ? <C block={block} locale={locale} /> : null
+  return C ? <C block={block} locale={locale} headingTag={firstIsH1 && i === 0 ? 'h1' : 'h2'} /> : null
 })}

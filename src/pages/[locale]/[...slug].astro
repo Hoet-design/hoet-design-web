@@ -23,5 +23,5 @@ const description = t(page.seo?.metaDescription, locale)
 const langUrls = Object.fromEntries(LOCALES.map((l) => [l, `/${l}/${slugOf(page, l) || slugOf(page, 'nl')}`]))
 ---
 <Base locale={locale} title={title} description={description} langUrls={langUrls}>
-  <Blocks blocks={page.blocks ?? []} locale={locale} />
+  <Blocks blocks={page.blocks ?? []} locale={locale} firstIsH1 />
 </Base>

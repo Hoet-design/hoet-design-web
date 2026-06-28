@@ -10,7 +10,7 @@ const locale = Astro.params.locale as Locale
 const refs = await getReferences()
 const langUrls = Object.fromEntries(LOCALES.map((l) => [l, `/${l}/referenties`]))
 ---
-<Base locale={locale} title={ui('referenties', locale)} langUrls={langUrls}>
+<Base locale={locale} title={ui('referenties', locale)} description={ui('referentiesDesc', locale)} langUrls={langUrls}>
   <section class="content-section content-section--white">
     <div class="row"><div class="columns">
       <h1 class="main__title">{ui('referenties', locale)}</h1>
