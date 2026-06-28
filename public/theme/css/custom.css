@@ -105,8 +105,14 @@
 /* Site-wide contact CTA background. The live uses background-size:cover, which blows the two
    portraits up huge on narrower widths. Instead show them at NATURAL height on the left and let
    the matching grey (#5f5f5f, sampled from the photo) fill the rest. Mobile: plain grey only. */
-section.content-section--cta-contact { background-color:#5f5f5f; background-image:var(--cta-bg, none); background-size:auto 100%; background-position:left center; background-repeat:no-repeat; }
-@media (max-width:900px){ section.content-section--cta-contact { background-image:none; } }
+section.content-section--cta-contact { background-color:#5f5f5f; background-image:none; position:relative; }
+/* Desktop: portraits become a fixed left column (~32%, like the live photo), and the text is
+   centred in the GREY area to the right of them — not over the full width (which crowded them). */
+@media (min-width:901px){
+  section.content-section--cta-contact { padding-left:32%; }
+  section.content-section--cta-contact::before { content:''; position:absolute; left:0; top:0; bottom:0; width:32%; background:var(--cta-bg) left center / cover no-repeat; }
+  section.content-section--cta-contact .contact-cta-block { width:auto; max-width:700px; margin:0 auto; }
+}
 
 /* Site-wide contact CTA: make the h2 heading match the vendored h1.main__title (white, centred accent) */
 section.content-section--cta-contact .main__title { color:#fff; text-align:center; margin-bottom:50px; }
