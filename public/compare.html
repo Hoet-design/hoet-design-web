@@ -51,6 +51,8 @@
       <option value="390">Mobiel 390</option>
     </select>
     <span id="fadeWrap" class="hide"><label>Fade live</label><input id="fade" type="range" min="0" max="100" value="50" /></span>
+    <label>Scroll-sync</label>
+    <select id="sync"><option value="off">Uit (live direct)</option><option value="on">Aan (via proxy)</option></select>
     <button id="reload">↻ Herlaad</button>
     <span class="grow"></span>
     <span class="urls" id="urls"></span>
@@ -85,7 +87,7 @@
   const DEV_BASE  = location.origin; // the dev server that serves this file
 
   const $ = (id) => document.getElementById(id);
-  const pageSel = $('page'), localeSel = $('locale'), modeSel = $('mode'), widthSel = $('width');
+  const pageSel = $('page'), localeSel = $('locale'), modeSel = $('mode'), widthSel = $('width'), syncSel = $('sync');
   const live = $('live'), dev = $('dev'), stage = $('stage'), urls = $('urls');
   const fadeWrap = $('fadeWrap'), fade = $('fade');
 
@@ -110,15 +112,42 @@
   }
   function applyFade() { $('paneLive').style.opacity = fade.value / 100; }
 
-  function load() {
-    const p = PAGES[pageSel.value], loc = localeSel.value;
-    const liveUrl = build(LIVE_BASE, loc, p.live);
-    const devUrl  = build(DEV_BASE,  loc, p.dev);
-    live.src = liveUrl; dev.src = devUrl;
-    urls.textContent = liveUrl + '   |   ' + devUrl;
+  // ---- scroll sync (only possible when both iframes are same-origin → live via /live-proxy) ----
+  let syncOff = [];
+  function teardownSync() { syncOff.forEach((f) => f()); syncOff = []; }
+  function setupSync() {
+    teardownSync();
+    if (syncSel.value !== 'on') return;
+    let busy = false;
+    const link = (a, b) => {
+      let win;
+      try { win = a.contentWindow; win.document; } catch (e) { return; } // cross-origin → skip
+      const onScroll = () => {
+        if (busy) return; busy = true;
+        try { b.contentWindow.scrollTo(win.scrollX, win.scrollY); } catch (e) {}
+        requestAnimationFrame(() => { busy = false; });
+      };
+      try { win.addEventListener('scroll', onScroll, { passive: true }); } catch (e) { return; }
+      syncOff.push(() => { try { win.removeEventListener('scroll', onScroll); } catch (e) {} });
+    };
+    link(dev, live); link(live, dev);
   }
 
-  pageSel.onchange = load; localeSel.onchange = load;
+  function load() {
+    const p = PAGES[pageSel.value], loc = localeSel.value;
+    const sync = syncSel.value === 'on';
+    const livePath = '/' + loc + (p.live ? '/' + p.live : '');
+    const liveUrl = sync ? (DEV_BASE + '/live-proxy' + livePath) : build(LIVE_BASE, loc, p.live);
+    const devUrl  = build(DEV_BASE, loc, p.dev);
+    teardownSync();
+    let loaded = 0;
+    const onLoad = () => { if (++loaded >= 2) setupSync(); };
+    live.onload = onLoad; dev.onload = onLoad;
+    live.src = liveUrl; dev.src = devUrl;
+    urls.textContent = (sync ? '[proxy] ' : '') + liveUrl + '   |   ' + devUrl;
+  }
+
+  pageSel.onchange = load; localeSel.onchange = load; syncSel.onchange = load;
   modeSel.onchange = applyMode; widthSel.onchange = applyWidth;
   fade.oninput = applyFade;
   $('reload').onclick = load;
