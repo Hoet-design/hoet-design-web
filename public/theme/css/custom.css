@@ -106,3 +106,9 @@
 section.content-section--cta-contact .main__title { color:#fff; text-align:center; margin-bottom:50px; }
 section.content-section--cta-contact .main__title::after { background:#fff; left:50%; -webkit-transform:translate(-50%,0); transform:translate(-50%,0); }
 .content-section--cta-contact .contact-cta-info a { color:#fff; text-decoration:none; }
+
+/* CTA scroll-reveal (way-point): add a transition + replicate the heading animation for our h2
+   (the vendored anim targets h1.main__title). JS adds .in-view when scrolled into view. */
+section.content-section--cta-contact .way-point { -webkit-transition:all .6s cubic-bezier(.55,0,.1,1); transition:all .6s cubic-bezier(.55,0,.1,1); }
+section.content-section--cta-contact .main__title.way-point { opacity:0; -webkit-transform:translate(0,30px) scale(.5); transform:translate(0,30px) scale(.5); }
+section.content-section--cta-contact .main__title.way-point.in-view { opacity:1; -webkit-transform:translate(0,0) scale(1); transform:translate(0,0) scale(1); }
