@@ -101,3 +101,8 @@
 .cookie-banner__prefs { display:inline-block; margin-top:.7rem; background:#dcdbd8; color:#1a1a1a; border:0; padding:8px 16px; font-size:14px; font-weight:700; cursor:pointer; }
 .cookie-banner__prefs:hover { background:#cfcecb; }
 @media (max-width:640px){ .cookie-banner { left:0; right:0; bottom:0; max-width:none; } }
+
+/* Site-wide contact CTA: make the h2 heading match the vendored h1.main__title (white, centred accent) */
+section.content-section--cta-contact .main__title { color:#fff; text-align:center; margin-bottom:50px; }
+section.content-section--cta-contact .main__title::after { background:#fff; left:50%; -webkit-transform:translate(-50%,0); transform:translate(-50%,0); }
+.content-section--cta-contact .contact-cta-info a { color:#fff; text-decoration:none; }

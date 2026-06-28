@@ -42,7 +42,8 @@ const isActive = (url: string) => {
 
 const favicon = imgUrl(settings?.favicon, 64, 64)
 const footerImg = settings?.footerImage
-const footerImgUrl = footerImg ? imgUrl(footerImg, 1200) : null
+// full (uncropped) image for the site-wide contact CTA background
+const ctaBg = footerImg?.asset ? imgUrl({ _type: 'image', asset: footerImg.asset }, 1950) : null
 const metaTitle = title ? `${title} — Hoet Design` : 'Hoet Design'
 
 // ---- SEO: absolute URLs, canonical, hreflang, Open Graph, JSON-LD ----
@@ -130,11 +131,21 @@ const orgJsonLd = {
     <slot />
   </div></div></div>
 
-  {footerImgUrl && (
-    <div class="footer-image">
-      <img src={footerImgUrl} alt={imgAlt(footerImg, locale, 'Hoet Design')} />
+  {/* Site-wide contact CTA (like the live, above the footer) */}
+  <section class="content-section content-section--cta-contact" style={ctaBg ? `background-image:url('${ctaBg}')` : undefined}>
+    <div class="contact-cta-block">
+      <h2 class="main__title hero">{ui('contactTitle', locale)}</h2>
+      <div class="row">
+        <div class="columns medium-6"><div class="contact-cta-info sep"><i class="fa fa-phone"></i><a href="tel:+3250334302">+32 (0) 50 33 43 02</a></div></div>
+        <div class="columns medium-6"><div class="contact-cta-info"><i class="fa fa-envelope"></i><a href="mailto:info@hoet.be">info@hoet.be</a></div></div>
+      </div>
+      <div class="contact-cta-bottom">
+        <div class="row"><div class="columns text-center">
+          <a class="btn btn--border--white" href={`/${locale}/contact`}>{ui('offerteBtn', locale)}</a>
+        </div></div>
+      </div>
     </div>
-  )}
+  </section>
 
   <footer class="footer">
     <div class="bottombar mobile-center"><div class="row"><div class="columns large-12">

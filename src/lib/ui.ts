@@ -32,6 +32,7 @@ const STRINGS: Record<string, Record<Locale, string>> = {
   cookieDecline: { nl: 'Ik weiger', en: 'I decline', fr: 'Je refuse', de: 'Ich lehne ab' },
   cookiePrefs: { nl: 'Wijzig mijn voorkeuren', en: 'Manage preferences', fr: 'Gérer mes préférences', de: 'Einstellungen ändern' },
   contactTitle: { nl: 'Contacteer ons', en: 'Contact us', fr: 'Contactez-nous', de: 'Kontaktieren Sie uns' },
+  offerteBtn: { nl: 'Vrijblijvende offerte ontvangen', en: 'Request a free quote', fr: 'Recevoir un devis sans engagement', de: 'Unverbindliches Angebot erhalten' },
   contactIntro: {
     nl: 'Hebt u vragen voor ontwerpbureau Hoet te Brugge, België? Neem dan contact op via e-mail op info@hoet.be of telefonisch op +32 (0)50 33 43 02.',
     en: 'Do you have questions for Hoet design studio in Bruges, Belgium? Please contact us per email info@hoet.be or by phone +32 (0)50 33 43 02.',
