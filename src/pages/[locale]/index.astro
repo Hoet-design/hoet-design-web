@@ -17,6 +17,9 @@ const description = t(page?.seo?.metaDescription, locale)
 const langUrls = Object.fromEntries(LOCALES.map((l) => [l, `/${l}`]))
 const intro = HOME_INTRO[locale]
 const br = (s: string) => s.split('\n').join('<br>')
+// body copy: drop the source's per-clause line breaks so it flows + wraps naturally (the hard
+// <br>s produced ragged short centred lines). The title keeps its two-line break.
+const flow = (s: string) => s.replace(/\n/g, ' ')
 ---
 <Base locale={locale} title={title} description={description} langUrls={langUrls}>
   {/* Full-height video hero ABOVE the nav (so the menu sits at the bottom of the first screen, like the live) */}
@@ -36,10 +39,9 @@ const br = (s: string) => s.split('\n').join('<br>')
     <div class="row"><div class="columns">
       <h1 class="main__title hero" set:html={br(intro.title)} />
       <div class="page-content intro-home">
-        <div style="text-align:center;" set:html={br(intro.para1)} />
-        <p>&nbsp;</p>
-        {intro.h2 && <h2 style="text-align:center;" set:html={br(intro.h2)} />}
-        <div style="text-align:center;" set:html={br(intro.para2)} />
+        <p style="text-align:center;">{flow(intro.para1)}</p>
+        {intro.h2 && <h2 style="text-align:center;">{flow(intro.h2)}</h2>}
+        <p style="text-align:center;">{flow(intro.para2)}</p>
       </div>
     </div></div>
   </section>
