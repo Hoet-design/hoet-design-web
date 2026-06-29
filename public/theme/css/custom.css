@@ -3,6 +3,12 @@
 .footer-image img { display:block; max-width:540px; width:auto; height:auto; }
 @media (max-width:640px){ .footer-image img { max-width:100%; } }
 
+/* Nav: the vendored CSS hides the separator after the 2nd-to-last item (.nav__item:nth-last-child(2)),
+   which on our 6-item menu drops the slash between Beurzen and Contact. Restore it. */
+@media (min-width:1131px){
+  .navigation .nav .nav__item:nth-last-child(2) a:after { display:block; }
+}
+
 /* Home intro: the vendored 1.4rem / line-height:2 / 1.5px tracking + 5rem heading gap reads very
    large and loose. Tighten to a more refined, readable scale. */
 .page-content.intro-home { font-size:1.1rem; line-height:1.7; letter-spacing:.3px; }
