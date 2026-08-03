@@ -6,17 +6,22 @@ const { refs = [], locale } = Astro.props as { refs: any[]; locale: Locale }
 ---
 <div class="ref-wrap">
   {refs.map((r: any) => {
-    const url = `/${locale}/referenties/${slugOf(r, locale)}`
+    const slug = slugOf(r, locale)
+    // Zonder slug bouwt [...slug].astro geen detailpagina, en wees de link naar
+    // /referenties/ — het overzicht waar je al stond. Dat overkwam Morrow Eyewear.
+    // Liever geen link dan een link die stilstaat: het blok blijft staan, alleen de
+    // doorklik verdwijnt tot de slug in de Studio ingevuld is.
+    const url = slug ? `/${locale}/referenties/${slug}` : null
     const title = t(r.title, locale)
     const logo = imgUrl(r.logo, 600)
     return (
       <div class="ref__block">
         <div class="ref__block__logo">
-          <a class="overlay-link" href={url} title={title}></a>
+          {url && <a class="overlay-link" href={url} title={title}></a>}
           {logo && <div class="ref-logo"><img src={logo} alt={imgAlt(r.logo, locale, title)} /></div>}
         </div>
         <div class="ref__block__slider">
-          <a class="overlay-link" href={url} title={title}></a>
+          {url && <a class="overlay-link" href={url} title={title}></a>}
           <div class="ref-slider" data-slider>
             {(r.photos ?? []).map((p: any) => {
               const src = imgUrl(p, 800)
@@ -25,9 +30,11 @@ const { refs = [], locale } = Astro.props as { refs: any[]; locale: Locale }
           </div>
         </div>
         <div class="ref__block__info">
-          <a href={url} title={title}><h3>{title}</h3></a>
+          {url ? <a href={url} title={title}><h3>{title}</h3></a> : <h3>{title}</h3>}
           <div class="page-content" set:html={pt(r.description, locale)} />
-          <a href={url} title={title} class="more"><i class="fa fa-angle-double-right"></i> {ui('leesMeer', locale)}</a>
+          {url && (
+            <a href={url} title={title} class="more"><i class="fa fa-angle-double-right"></i> {ui('leesMeer', locale)}</a>
+          )}
         </div>
       </div>
     )
