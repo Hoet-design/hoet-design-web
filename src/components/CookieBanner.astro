@@ -3,27 +3,61 @@ import { ui } from '../lib/ui'
 import type { Locale } from '../lib/sanity'
 const { locale } = Astro.props as { locale: Locale }
 ---
-<div class="cookie-banner" id="cookieBanner" hidden>
+<div
+  class="cookie-banner"
+  id="cookieBanner"
+  hidden
+  data-yes={ui('cookieStateYes', locale)}
+  data-no={ui('cookieStateNo', locale)}
+>
   <h2 class="cookie-banner__title">{ui('cookieTitle', locale)}</h2>
   <p class="cookie-banner__text">{ui('cookieText', locale)}</p>
+  <p class="cookie-banner__state" id="cookieState" hidden></p>
   <div class="cookie-banner__actions">
     <button type="button" class="cookie-banner__btn" data-cookie="accepted">{ui('cookieAccept', locale)}</button>
     <button type="button" class="cookie-banner__btn" data-cookie="declined">{ui('cookieDecline', locale)}</button>
   </div>
-  <button type="button" class="cookie-banner__prefs" data-cookie="declined">{ui('cookiePrefs', locale)}</button>
 </div>
 
 <script is:inline>
-  (function () {
-    var KEY = 'hd-cookie-consent';
-    var el = document.getElementById('cookieBanner');
-    if (!el) return;
-    try { if (!localStorage.getItem(KEY)) el.hidden = false; } catch (e) { el.hidden = false; }
+  ;(function () {
+    var el = document.getElementById('cookieBanner')
+    var stand = document.getElementById('cookieState')
+    // Zonder hdConsent doet deze banner niets zinvols: hij zou een keuze wegschrijven die
+    // niemand uitleest. Dan liever helemaal geen banner dan een knop die niets doet.
+    if (!el || !window.hdConsent) return
+
+    var woord = { accepted: el.getAttribute('data-yes'), declined: el.getAttribute('data-no') }
+
+    function toon() {
+      var keuze = window.hdConsent.read()
+      if (stand) {
+        // Wie de banner heropent hoort te zien wat er nu geldt. Zonder deze regel is
+        // wijzigen een gok: twee dezelfde knoppen, en geen idee welke actief is.
+        stand.hidden = !keuze
+        stand.textContent = keuze ? woord[keuze.choice] || '' : ''
+      }
+      el.hidden = false
+    }
+
+    if (!window.hdConsent.read()) toon()
+
     el.querySelectorAll('[data-cookie]').forEach(function (b) {
       b.addEventListener('click', function () {
-        try { localStorage.setItem(KEY, b.getAttribute('data-cookie')); } catch (e) {}
-        el.hidden = true;
-      });
-    });
-  })();
+        window.hdConsent.write(b.getAttribute('data-cookie'))
+        el.hidden = true
+      })
+    })
+
+    // De knop in de voettekst opent hem opnieuw. Toestemming intrekken hoort even
+    // makkelijk te zijn als ze geven, en zonder dit is de eerste keuze definitief: de
+    // banner verdwijnt na het eerste antwoord en localStorage overleeft een harde refresh.
+    document.querySelectorAll('.js-cookie-settings').forEach(function (b) {
+      b.addEventListener('click', function (e) {
+        e.preventDefault()
+        toon()
+        el.scrollIntoView({ block: 'center', behavior: 'smooth' })
+      })
+    })
+  })()
 </script>

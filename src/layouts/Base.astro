@@ -3,6 +3,7 @@ import { getPages, getSettings, LOCALES, type Locale } from '../lib/sanity'
 import { t, slugOf, imgUrl, imgAlt } from '../lib/content'
 import { ui } from '../lib/ui'
 import CookieBanner from '../components/CookieBanner.astro'
+import Analytics from '../components/Analytics.astro'
 
 interface Props {
   locale: Locale
@@ -93,6 +94,7 @@ const orgJsonLd = {
   <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,700" rel="stylesheet" />
   <link rel="stylesheet" href="/theme/css/compiled.min.css" />
   <link rel="stylesheet" href="/theme/css/custom.css" />
+  <Analytics />
 </head>
 <body>
   <slot name="hero" />
@@ -154,6 +156,10 @@ const orgJsonLd = {
         <a href={`/${locale}/voorwaarden`} class="footer-list-item">Voorwaarden</a>
         <a href={`/${locale}/privacy`} class="footer-list-item">privacy</a>
         <a href={`/${locale}/imprint`} class="footer-list-item">imprint</a>
+        {/* Zonder deze knop is de eerste keuze definitief: de banner verdwijnt na het
+            eerste antwoord en localStorage overleeft een harde refresh. Intrekken hoort
+            even makkelijk te zijn als geven. */}
+        <button type="button" class="footer-list-item js-cookie-settings">{ui('cookiePrefs', locale)}</button>
       </div>
     </div></div></div>
   </footer>

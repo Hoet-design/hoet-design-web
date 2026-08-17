@@ -22,11 +22,26 @@ const STRINGS: Record<string, Record<Locale, string>> = {
     de: 'Internationale Messebeteiligungen des Design-Studios Hoet — treffen Sie uns auf den Optikmessen.',
   },
   cookieTitle: { nl: 'Wij gebruiken cookies', en: 'We use cookies', fr: 'Nous utilisons des cookies', de: 'Wir verwenden Cookies' },
+  // De tekst beschrijft wat er GEBEURT en niet wat er zou kunnen gebeuren. Er stond dat we
+  // gepersonaliseerde inhoud en advertenties tonen; dat doen we niet, en toestemming vragen
+  // voor iets wat je niet doet maakt de rest van de zin ook ongeloofwaardig.
   cookieText: {
-    nl: 'Wij maken gebruik van cookies en andere tracking-technologieën om uw surfervaring op onze website te verbeteren, om gepersonaliseerde inhoud en advertenties te tonen, om ons websiteverkeer te analyseren en om te begrijpen waar onze bezoekers vandaan komen.',
-    en: 'We use cookies and other tracking technologies to improve your browsing experience on our website, to show personalised content and ads, to analyse our website traffic and to understand where our visitors come from.',
-    fr: "Nous utilisons des cookies et d'autres technologies de suivi pour améliorer votre navigation sur notre site, afficher des contenus et publicités personnalisés, analyser notre trafic et comprendre d'où viennent nos visiteurs.",
-    de: 'Wir verwenden Cookies und andere Tracking-Technologien, um Ihr Surferlebnis auf unserer Website zu verbessern, personalisierte Inhalte und Werbung anzuzeigen, unseren Website-Verkehr zu analysieren und zu verstehen, woher unsere Besucher kommen.',
+    nl: 'Wij gebruiken cookies om ons websiteverkeer te analyseren: hoeveel bezoekers er zijn, welke pagina\'s ze lezen en waar ze vandaan komen. Geen advertenties, geen profielen, en pas nadat u aanvaardt.',
+    en: 'We use cookies to analyse our website traffic: how many visitors there are, which pages they read and where they come from. No advertising, no profiling, and only after you accept.',
+    fr: "Nous utilisons des cookies pour analyser le trafic de notre site : combien de visiteurs, quelles pages ils lisent et d'où ils viennent. Pas de publicité, pas de profilage, et uniquement après votre accord.",
+    de: 'Wir verwenden Cookies, um unseren Website-Verkehr zu analysieren: wie viele Besucher es gibt, welche Seiten sie lesen und woher sie kommen. Keine Werbung, keine Profile, und erst nachdem Sie zustimmen.',
+  },
+  cookieStateYes: {
+    nl: 'U aanvaardde de statistieken.',
+    en: 'You accepted analytics.',
+    fr: 'Vous avez accepté les statistiques.',
+    de: 'Sie haben die Statistiken akzeptiert.',
+  },
+  cookieStateNo: {
+    nl: 'U weigerde de statistieken.',
+    en: 'You declined analytics.',
+    fr: 'Vous avez refusé les statistiques.',
+    de: 'Sie haben die Statistiken abgelehnt.',
   },
   cookieAccept: { nl: 'Ik ga akkoord', en: 'I agree', fr: "J'accepte", de: 'Ich stimme zu' },
   cookieDecline: { nl: 'Ik weiger', en: 'I decline', fr: 'Je refuse', de: 'Ich lehne ab' },

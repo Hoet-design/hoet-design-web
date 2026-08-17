@@ -110,8 +110,14 @@
 .cookie-banner__actions { display:flex; gap:.5rem; flex-wrap:wrap; }
 .cookie-banner__btn { background:#1a1a1a; color:#fff; border:0; padding:8px 16px; font-size:14px; font-weight:700; cursor:pointer; }
 .cookie-banner__btn:hover { background:#000; }
-.cookie-banner__prefs { display:inline-block; margin-top:.7rem; background:#dcdbd8; color:#1a1a1a; border:0; padding:8px 16px; font-size:14px; font-weight:700; cursor:pointer; }
-.cookie-banner__prefs:hover { background:#cfcecb; }
+/* De derde knop in de banner is weg. Hij heette "Wijzig mijn voorkeuren" en weigerde in
+   stilte (data-cookie="declined"): een knop die iets anders doet dan hij zegt. Wijzigen kan
+   nu via de voettekst, waar het hoort, en dan zie je ook wat er nu geldt. */
+.cookie-banner__state { margin:0 0 1rem; font-size:14px; color:#4a4a4a; }
+
+/* De cookieknop in de voettekst ziet er hetzelfde uit als de links ernaast: het is
+   dezelfde soort keuze, en een knop die eruitspringt trekt aandacht die hij niet verdient. */
+.footer-list-item.js-cookie-settings { background:none; border:0; padding:0; margin:0; font:inherit; cursor:pointer; }
 @media (max-width:640px){ .cookie-banner { left:0; right:0; bottom:0; max-width:none; } }
 
 /* Site-wide contact CTA background. The live uses background-size:cover, which blows the two

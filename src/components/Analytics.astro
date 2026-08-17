@@ -1,0 +1,91 @@
+---
+// Google Analytics, maar pas na toestemming.
+//
+// Het meetpunt staat hier en niet in een omgevingsvariabele: een GA4-id is publiek, het
+// staat in de broncode van elke pagina die het gebruikt. Wat wél geheim moet blijven hoort
+// niet in een statische site.
+//
+// De banner naast dit bestand schreef tot nu alleen een keuze weg en verborg zichzelf. Er
+// werd niets geladen, dus de keuze bestond wel maar deed niets. Nu hangt het laden eraan
+// vast, en dat is de enige reden dat er een banner mag staan.
+const GA_ID = 'G-ZR82V6HC3Z'
+---
+
+<script is:inline define:vars={{ GA_ID }}>
+  window.hdConsent = (function () {
+    var KEY = 'hd-cookie-consent'
+    // Toestemming van onbepaalde duur bestaat niet. Na een jaar vervalt ze en vraagt de
+    // banner het opnieuw, zoals op hoet.be en cabrio-eyewear.be.
+    var JAAR = 365 * 24 * 60 * 60 * 1000
+
+    function read() {
+      var ruw
+      try {
+        ruw = localStorage.getItem(KEY)
+      } catch (e) {
+        return null
+      }
+      if (!ruw) return null
+
+      // De eerste versie bewaarde enkel het woord, zonder datum. Die keuze blijft geldig;
+      // ze krijgt gewoon geen vervaldatum tot de bezoeker opnieuw kiest.
+      if (ruw === 'accepted' || ruw === 'declined') return { choice: ruw, at: null }
+
+      var opgeslagen
+      try {
+        opgeslagen = JSON.parse(ruw)
+      } catch (e) {
+        return null
+      }
+      if (!opgeslagen || (opgeslagen.choice !== 'accepted' && opgeslagen.choice !== 'declined')) return null
+      if (opgeslagen.at && Date.now() - Date.parse(opgeslagen.at) > JAAR) return null
+
+      return opgeslagen
+    }
+
+    function write(choice) {
+      try {
+        localStorage.setItem(KEY, JSON.stringify({ choice: choice, at: new Date().toISOString() }))
+      } catch (e) {}
+      if (choice === 'accepted') load()
+      return read()
+    }
+
+    var geladen = false
+
+    function load() {
+      if (geladen || !GA_ID) return
+      geladen = true
+
+      window.dataLayer = window.dataLayer || []
+      function gtag() {
+        dataLayer.push(arguments)
+      }
+
+      // Geen advertentiedata. Sinds 15 juni 2026 bepaalt de Google Signals-schakelaar in
+      // GA4 niet meer of er advertentiecookies gezet worden; dat gaat via deze parameters.
+      // analytics_storage mag wel, want deze functie draait pas na aanvaarding.
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'granted',
+      })
+      gtag('js', new Date())
+      gtag('config', GA_ID, {
+        allow_google_signals: false,
+        allow_ad_personalization_signals: false,
+      })
+
+      var s = document.createElement('script')
+      s.async = true
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA_ID)
+      document.head.appendChild(s)
+    }
+
+    var keuze = read()
+    if (keuze && keuze.choice === 'accepted') load()
+
+    return { read: read, write: write, load: load }
+  })()
+</script>
