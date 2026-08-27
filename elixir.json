@@ -1,5 +1,5 @@
 {
   "environments": {
-    "production": "https://hoet-design.be"
+    "staging": "https://hoet-design-web.netlify.app"
   }
 }
