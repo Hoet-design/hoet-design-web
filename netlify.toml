@@ -2,37 +2,6 @@
   command = "npm run build"
   publish = "dist"
 
-# hoet-design.be/.com staan tijdelijk op non-actief en sturen door naar hoet.be.
-# Bewust per hostnaam en niet als kale /* : zo blijft de site zelf bereikbaar op
-# hoet-design-web.netlify.app (en op deploy previews), want ze is niet weg maar geparkeerd.
-# 302 en geen 301: een 301 blijft in browsers hangen lang nadat we hem hier weghalen,
-# en dan is "tijdelijk" in de praktijk permanent geworden.
-# Geen :splat naar hoet.be: de paden van de corporate site (/nl/referenties, /nl/beurzen)
-# bestaan daar niet, dus elk pad zou een 404 worden. Alles gaat naar de homepage.
-[[redirects]]
-  from = "https://hoet-design.com/*"
-  to = "https://hoet.be/"
-  status = 302
-  force = true
-
-[[redirects]]
-  from = "https://www.hoet-design.com/*"
-  to = "https://hoet.be/"
-  status = 302
-  force = true
-
-[[redirects]]
-  from = "https://hoet-design.be/*"
-  to = "https://hoet.be/"
-  status = 302
-  force = true
-
-[[redirects]]
-  from = "https://www.hoet-design.be/*"
-  to = "https://hoet.be/"
-  status = 302
-  force = true
-
 [[redirects]]
   from = "/"
   to = "/nl"
