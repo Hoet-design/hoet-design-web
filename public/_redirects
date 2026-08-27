@@ -1,0 +1,65 @@
+# hoet-design.be/.com sturen door naar hoet.be.
+#
+# Per hostnaam en niet als kale /* : de site zelf blijft daardoor bereikbaar op
+# hoet-design-web.netlify.app en op deploy previews. De klant weet nog niet of ze
+# de site nog gaat gebruiken, en je moet ze kunnen tonen zonder eerst een
+# redirect te moeten uitzetten.
+#
+# 302, geen 301. Een 301 blijft in browsers hangen lang nadat we hem hier
+# weghalen, en dan is de twijfel stilzwijgend een beslissing geworden.
+#
+# De taal gaat mee. Beide sites gebruiken /nl /en /fr /de, dus wie via een
+# Engelse zoekopdracht op hoet-design.com/en/... landt, komt op hoet.be/en en
+# niet op een Nederlandse homepage. Het pad zelf gaat niet mee: /nl/referenties
+# en /nl/beurzen bestaan niet op hoet.be en zouden daar een 404 worden.
+#
+# De ! is force: zonder dat wint het statische bestand van de regel.
+
+# https://hoet-design.com
+https://hoet-design.com/nl      https://hoet.be/nl  302!
+https://hoet-design.com/nl/*    https://hoet.be/nl  302!
+https://hoet-design.com/en      https://hoet.be/en  302!
+https://hoet-design.com/en/*    https://hoet.be/en  302!
+https://hoet-design.com/fr      https://hoet.be/fr  302!
+https://hoet-design.com/fr/*    https://hoet.be/fr  302!
+https://hoet-design.com/de      https://hoet.be/de  302!
+https://hoet-design.com/de/*    https://hoet.be/de  302!
+https://hoet-design.com/*         https://hoet.be/       302!
+
+# https://www.hoet-design.com
+https://www.hoet-design.com/nl      https://hoet.be/nl  302!
+https://www.hoet-design.com/nl/*    https://hoet.be/nl  302!
+https://www.hoet-design.com/en      https://hoet.be/en  302!
+https://www.hoet-design.com/en/*    https://hoet.be/en  302!
+https://www.hoet-design.com/fr      https://hoet.be/fr  302!
+https://www.hoet-design.com/fr/*    https://hoet.be/fr  302!
+https://www.hoet-design.com/de      https://hoet.be/de  302!
+https://www.hoet-design.com/de/*    https://hoet.be/de  302!
+https://www.hoet-design.com/*         https://hoet.be/       302!
+
+# https://hoet-design.be
+https://hoet-design.be/nl      https://hoet.be/nl  302!
+https://hoet-design.be/nl/*    https://hoet.be/nl  302!
+https://hoet-design.be/en      https://hoet.be/en  302!
+https://hoet-design.be/en/*    https://hoet.be/en  302!
+https://hoet-design.be/fr      https://hoet.be/fr  302!
+https://hoet-design.be/fr/*    https://hoet.be/fr  302!
+https://hoet-design.be/de      https://hoet.be/de  302!
+https://hoet-design.be/de/*    https://hoet.be/de  302!
+https://hoet-design.be/*         https://hoet.be/       302!
+
+# https://www.hoet-design.be
+https://www.hoet-design.be/nl      https://hoet.be/nl  302!
+https://www.hoet-design.be/nl/*    https://hoet.be/nl  302!
+https://www.hoet-design.be/en      https://hoet.be/en  302!
+https://www.hoet-design.be/en/*    https://hoet.be/en  302!
+https://www.hoet-design.be/fr      https://hoet.be/fr  302!
+https://www.hoet-design.be/fr/*    https://hoet.be/fr  302!
+https://www.hoet-design.be/de      https://hoet.be/de  302!
+https://www.hoet-design.be/de/*    https://hoet.be/de  302!
+https://www.hoet-design.be/*         https://hoet.be/       302!
+
+
+# Ongewijzigd overgenomen uit netlify.toml: niet geforceerd, dus de index.astro
+# van de site wint hier gewoon. Staat er voor het geval die ooit verdwijnt.
+/    /nl    302
