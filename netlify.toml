@@ -2,7 +2,6 @@
   command = "npm run build"
   publish = "dist"
 
-[[redirects]]
-  from = "/"
-  to = "/nl"
-  status = 302
+# De redirects staan in public/_redirects, niet hier. Netlify leest _redirects eerst
+# en netlify.toml daarna; regels op twee plekken laten staan betekent dat je bij een
+# wijziging moet weten welke van de twee wint. Dus staan ze op een plek.
